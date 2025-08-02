@@ -1,0 +1,50 @@
+# electron-builder.yml
+appId: com.lnantes.app.llavedigital
+productName: vue-ts
+directories:
+  buildResources: build
+  output: dist
+files:
+  - '!**/.vscode/*'
+  - '!src/*'
+  - '!electron.vite.config.{js,ts,mjs,cjs}'
+  - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
+  - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
+  - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
+asarUnpack:
+  - resources/**
+afterSign: build/notarize.js
+npmRebuild: false
+
+# Configuración por plataforma
+win:
+  target:
+    - nsis
+  executableName: vue-ts
+  artifactName: ${productName}-${version}-setup.${ext}
+
+nsis:
+  shortcutName: ${productName}
+  uninstallDisplayName: ${productName}
+  createDesktopShortcut: always
+
+mac:
+  target:
+    - dmg
+    - zip
+  entitlementsInherit: build/entitlements.mac.plist
+  extendInfo:
+    NSCameraUsageDescription: Application requests access to the device's camera.
+    NSMicrophoneUsageDescription: Application requests access to the device's microphone.
+    NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
+    NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
+  artifactName: ${productName}-${version}.${ext}
+
+linux:
+  target:
+    - AppImage
+    - deb
+    - snap
+  maintainer: electronjs.org
+  category: Utility
+  artifactName: ${productName}-${version}.${ext}

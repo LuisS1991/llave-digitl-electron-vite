@@ -1,6 +1,6 @@
-# .github/workflows/release.yml
+# .github/workflows/build.yml
 
-name: Build and Release Electron App
+name: Build Electron App and Upload Artifacts
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
       - v1.0.0
 
 jobs:
-  release:
+  build:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # Build steps per OS
+      # Platform-specific build
       - name: Build for Linux
         if: matrix.os == 'ubuntu-latest'
         run: npm run build:linux
@@ -40,19 +40,9 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: npm run build:win
 
-      # Draft GitHub Release with artifacts
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
+      # Upload output binaries
+      - name: Upload dist/ as artifact
+        uses: actions/upload-artifact@v4
         with:
-          draft: true
-          files: |
-            dist/*.exe
-            dist/*.zip
-            dist/*.dmg
-            dist/*.AppImage
-            dist/*.snap
-            dist/*.deb
-            dist/*.rpm
-            dist/*.tar.gz
-            dist/*.yml
-            dist/*.blockmap
+          name: electron-app-${{ matrix.os }}
+          path: dist/

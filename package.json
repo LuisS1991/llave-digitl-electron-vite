@@ -2,7 +2,7 @@
   "name": "llave-digital",
   "version": "1.0.0",
   "description": "An Electron application with Vue and TypeScript",
-  "main": "./dist/main/index.js",
+  "main": "./out/main/index.js",
   "author": "nantesluis72@gmail.com",
   "homepage": "https://electron-vite.org",
   "scripts": {

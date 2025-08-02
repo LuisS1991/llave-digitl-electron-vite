@@ -2,24 +2,14 @@
   "name": "llave-digital",
   "version": "1.0.0",
   "description": "An Electron application with Vue and TypeScript",
-  "main": "./out/main/index.js",
+  "main": "./dist/main/index.js",
   "author": "nantesluis72@gmail.com",
   "homepage": "https://electron-vite.org",
   "scripts": {
-    "format": "prettier --write .",
-    "lint": "eslint --cache .",
-    "typecheck:node": "tsc --noEmit -p tsconfig.node.json --composite false",
-    "typecheck:web": "vue-tsc --noEmit -p tsconfig.web.json --composite false",
-    "typecheck": "npm run typecheck:node && npm run typecheck:web",
-    "start": "electron-vite preview",
-    "dev": "electron-vite dev",
-    "build": "electron-vite build && electron-builder --config electron-builder.yml"
-    "build1": "npm run typecheck && electron-vite build",
-    "postinstall": "electron-builder install-app-deps",
-    "build:unpack": "npm run build && electron-builder --dir",
-    "build:win": "npm run build && electron-builder --win",
-    "build:mac": "npm run build && electron-builder --mac",
-    "build:linux": "npm run build && electron-builder --linux"
+   "start": "electron-vite preview --outDir=dist",
+  "dev": "electron-vite dev --outDir=dist",
+  "package": "electron-vite build --outDir=dist && electron-forge package",
+  "make ": "electron-vite build --outDir=dist && electron-forge make"
   },
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.2",
@@ -44,6 +34,11 @@
     "vite": "^7.0.5",
     "vue": "^3.5.17",
     "vue-eslint-parser": "^10.2.0",
-    "vue-tsc": "^3.0.3"
+    "vue-tsc": "^3.0.3",
+     "@electron-forge/cli": "^6.2.1",
+  "@electron-forge/maker-deb": "^6.2.1",
+  "@electron-forge/maker-rpm": "^6.2.1",
+  "@electron-forge/maker-squirrel": "^6.2.1",
+  "@electron-forge/maker-zip": "^6.2.1",
   }
 }

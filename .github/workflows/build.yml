@@ -1,0 +1,48 @@
+# .github/workflows/build.yml
+
+name: Build Electron App and Upload Artifacts
+
+on:
+  push:
+    tags:
+      - v1.0.0
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        run: npm install
+
+      # Platform-specific build
+      - name: Build for Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: npm run build:linux
+
+      - name: Build for macOS
+        if: matrix.os == 'macos-latest'
+        run: npm run build:mac
+
+      - name: Build for Windows
+        if: matrix.os == 'windows-latest'
+        run: npm run build:win
+
+      # Upload output binaries
+      - name: Upload dist/ as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: electron-app-${{ matrix.os }}
+          path: dist/
